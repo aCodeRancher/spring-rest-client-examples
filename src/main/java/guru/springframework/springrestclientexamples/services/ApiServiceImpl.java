@@ -42,13 +42,13 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public Flux<User> getUsers(Mono<Integer> limit) {
 
-        return WebClient
-                .create(api_url)
-                .get()
-                .uri(uriBuilder -> uriBuilder.queryParam("limit", limit.block()).build())
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .flatMap(resp -> resp.bodyToMono(UserData.class))
-                .flatMapIterable(UserData::getData);
+         return limit.flatMapMany(limitInteger-> WebClient
+         .create(api_url)
+         .get()
+         .uri(uriBuilder -> uriBuilder.queryParam("_limit", limitInteger.toString()).build())
+         .accept(MediaType.APPLICATION_JSON)
+         .retrieve()
+         .bodyToFlux(User.class)
+        );
     }
 }
