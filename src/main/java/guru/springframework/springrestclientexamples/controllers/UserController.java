@@ -8,6 +8,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
 
 /**
  * Created by jt on 9/22/17.
@@ -47,7 +48,11 @@ public class UserController {
                 apiService
                         .getUsers(serverWebExchange
                                 .getFormData()
-                                .map(data -> new Integer(data.getFirst("limit")))));
+                                .flatMap(data -> {
+                                     Integer limitInteger = Integer.valueOf(data.getFirst("limit"));
+                                     return Mono.just(limitInteger);
+                                })
+                        ));
 
         return "userlist";
     }
