@@ -9,7 +9,7 @@ public class User implements Serializable
 {
 
     private String gender;
-    private Name name;
+    private String name;
     private Location location;
     private String email;
     private Login login;
@@ -30,11 +30,11 @@ public class User implements Serializable
         this.gender = gender;
     }
 
-    public Name getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(Name name) {
+    public void setName(String name) {
         this.name = name;
     }
 
